@@ -1,0 +1,72 @@
+---
+title: "permutation p values"
+author: "Sidney Wang"
+date: "September 18, 2015"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+  word_document: default
+---
+
+*load data and package
+
+```{r}
+
+# data set
+load("/Users/siddisis/Dropbox/work/Ribosome_profiling/Primate_comparison/manuscript/data/rdas/eSetRRP.rda")
+
+# translation efficiency test results
+load("/Users/siddisis/Dropbox/work/Ribosome_profiling/Primate_comparison/manuscript/data/rdas/TEnew.rda")
+
+load("/Users/siddisis/Dropbox/work/Ribosome_profiling/Primate_comparison/manuscript/data/rdas/TE_other_interspecies.rda")
+
+#RNA, protein DD test results
+
+load("/Users/siddisis/Dropbox/work/Ribosome_profiling/Primate_comparison/manuscript/data/rdas/rnapro.rda")
+
+```
+
+
+## p value distribution and number of DE genes
+
+```{r}
+#p value
+hist(res.riborna$int.pval)
+hist(res.riborna_chimp_rhesus$int.pval)
+hist(res.riborna_human_rhesus$int.pval)
+
+
+#q value
+hist(res.riborna$int.qval)
+hist(res.riborna_chimp_rhesus$int.qval)
+hist(res.riborna_human_rhesus$int.qval)
+
+
+
+```
+
+
+
+## permutation shuffle both species and technology label simultaneously
+
+* check across gene permutation p values
+```{r}
+load("/Users/siddisis/Desktop/primate_ribo_rdas_permute/permute-per-gene/res-null-ribo-rna-per-gene.rda")
+library("reshape2", lib.loc="/Library/Frameworks/R.framework/Versions/3.2/Resources/library")
+library(dplyr)
+library(ggplot2)
+
+# melt list to create a data frame that combine all value in one column with corresponding variable category labels
+melt(res_null_ribo_rna_per_gene)->res_null_ribo_rna_per_gene.df
+
+# filter to create a data frame with only the p value variable
+filter(res_null_ribo_rna_per_gene.df, variable=="int.pval")->res_null_ribo_rna_per_gene.pval
+ggplot(data = res_null_ribo_rna_per_gene.pval) + geom_density(aes(x = value, fill= as.factor(L1)) , alpha=0.1) + guides(fill=FALSE)
+
+ggplot(data = res_null_ribo_rna_per_gene.pval) + geom_density(aes(x = value, fill= as.factor(ENSGID)) , alpha=0.1) + guides(fill=FALSE)
+
+  
+
+```
+
