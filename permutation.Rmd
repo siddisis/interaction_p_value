@@ -51,7 +51,7 @@ hist(res.riborna_human_rhesus$int.qval)
 ## permutation shuffle both species and technology label simultaneously
 
 * check across gene permutation p values
-```{r}
+```{r warning=FALSE, message=FALSE, comment=NA}
 load("/Users/siddisis/Desktop/primate_ribo_rdas_permute/permute-per-gene/res-null-ribo-rna-per-gene.rda")
 library("reshape2", lib.loc="/Library/Frameworks/R.framework/Versions/3.2/Resources/library")
 library(dplyr)
